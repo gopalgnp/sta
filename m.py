@@ -205,7 +205,7 @@ def start_attack_reply(message, target, port, time):
 # Dictionary to store the last time each user ran the /bgmi command
 bgmi_cooldown = {}
 
-COOLDOWN_TIME =0
+COOLDOWN_TIME = 0
 
 # Handler for /bgmi command
 @bot.message_handler(commands=['bgmi'])
@@ -227,7 +227,7 @@ def handle_bgmi(message):
             target = command[1]
             port = int(command[2])
             time = int(command[3])
-            if time > 300:
+                        if time > 300:
                 response = "⚠️Error: Time interval must be less than 300⚠️."
             else:
                 record_command_logs(user_id, '/bgmi', target, port, time)
@@ -270,6 +270,7 @@ def show_help(message):
  💥 /rules : Please Check Before Use !!.💥
  💥 /mylogs : To Check Your Recents Attacks.💥
  💥 /plan : Checkout Our Botnet Rates.💥
+ 💥 /checksub : Check Your Subscription Status. 💥
 
  To See Admin Commands:
  /admincmd : Shows All Admin Commands.
@@ -398,7 +399,18 @@ def end_subscription(message):
 
     bot.reply_to(message, response)
 
-bot.polling()
-#@Hi_cheat1
+@bot.message_handler(commands=['checksub'])
+def check_subscription(message):
+    user_id = str(message.chat.id)
+    if user_id in allowed_user_ids:
+        if has_active_subscription(user_id):
+            response = "✅Your subscription is active."
+        else:
+            response = "❌Your subscription has expired. Please contact an admin to renew❌"
+    else:
+        response = "🚫You Are Not Authorized To Use This Command🚫.\n@Hi_cheat1"
 
-                
+    bot.reply_to(message, response)
+
+bot.polling()
+@Hi_Cheat1
