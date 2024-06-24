@@ -7,10 +7,10 @@ import string
 import json
 
 # Insert your Telegram bot token here
-bot = telebot.TeleBot('7181099687:AAFe5nHUszjSRsAbG-nkQ0rinRQKI0a3_LE')
+bot = telebot.TeleBot('7168328141:AAH6RBLrB5PnULtz_KeUNK1uw1tlY-4tSRw')
 
 # Admin user IDs
-admin_id = {"881808734"}
+admin_id = {"6529567486"}
 
 # File to store allowed user IDs and expiration dates
 USER_FILE = "users.json"
@@ -270,6 +270,27 @@ def show_help(message):
 💥 /broadcast <message>: Broadcast a message to all users.
 '''
     bot.reply_to(message, help_text)
+
+@bot.message_handler(commands=['remove'])
+def remove_user(message):
+    user_id = str(message.chat.id)
+    if user_id in admin_id:
+        command = message.text.split()
+        if len(command) == 2:
+            target_user_id = command[1]
+            users = read_users()
+            if target_user_id in users:
+                del users[target_user_id]
+                save_users(users)
+                response = f"User {target_user_id} removed successfully."
+            else:
+                response = "User not found."
+        else:
+            response = "Usage: /remove <user_id>"
+    else:
+        response = "ONLY OWNER CAN USE."
+
+    bot.reply_to(message, response)
 
 @bot.message_handler(commands=['start'])
 def welcome_start(message):
